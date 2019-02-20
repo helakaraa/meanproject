@@ -11,3 +11,15 @@ a {
 .spacer{
     flex: 1 1 auto;
 }
+
+ul {
+    display: flex;
+}
+.mat-toolbar{
+  background-color: black;
+}
+
+.mat-button.mat-accent, .mat-icon-button.mat-accent, .mat-stroked-button.mat-accent {
+  color : white;
+}
+

@@ -1,14 +1,70 @@
-<mat-toolbar color="primary">
-   <span> 
+<!-- <mat-toolbar color="primary">
+   <span>
        <a routerLink="/">Coshare
        </a>
    </span>
    <span class="spacer"></span>
-   <ul>
-       <li> 
-           <a mat-button routerLink="/create" routerLinkActive="mat-accent">New Question</a>
+   <ul >
+
+      <li>
+
+          <a mat-button > <mat-icon>search</mat-icon> Search</a>
+      </li>
+
+       <li>
+          <a mat-button routerLink="/create" routerLinkActive="mat-accent">
+          <button mat-raised-button>  Add Question</button> </a>
+
        </li>
-   </ul>    
+
+       <li  *ngFor="let element of menu">
+
+          <a mat-button routerLink= {{element.url}} routerLinkActive="mat-accent"> <mat-icon>{{ element.icon }}</mat-icon> {{ element.name }} </a>
+       </li>
+       <li>
+        <a mat-button routerLink="/login" routerLinkActive="mat-accent">Login</a>
+       </li>
+       <li>
+        <a mat-button routerLink="/signup" routerLinkActive="mat-accent">SignUp</a>
+       </li>
 
 
-</mat-toolbar>
+   </ul>
+
+
+</mat-toolbar> -->
+
+<mat-toolbar color="primary">
+    <span>
+      <a routerLink="/">Coshare</a>
+    </span>
+    <span class="spacer"></span>
+    <ul *ngIf="userIsAuthenticated">
+
+          <li>
+              <a mat-button > <mat-icon>search</mat-icon> Search</a>
+          </li>
+
+          <li >
+              <a mat-button routerLink="/create" routerLinkActive="mat-accent">
+              <button mat-raised-button>  Add Question</button> </a>
+
+          </li>
+          <li *ngFor="let element of menu">
+            <a mat-button routerLink= {{element.url}} routerLinkActive="mat-accent"> <mat-icon>{{ element.icon }}</mat-icon> {{ element.name }} </a>
+         </li>
+         <a mat-button routerLink= "/" routerLinkActive="mat-accent"> <mat-icon>account_circle</mat-icon>{{user.userId}}</a>
+         <button mat-button (click)="onLogout()">Logout</button>
+    </ul>
+    <ul *ngIf="!userIsAuthenticated">
+
+      <li>
+        <a mat-button routerLink="/login" routerLinkActive="mat-accent">Login</a>
+      </li>
+
+      <li>
+        <a mat-button routerLink="/signup" routerLinkActive="mat-accent">Signup</a>
+      </li>
+    </ul>
+  </mat-toolbar>
+
