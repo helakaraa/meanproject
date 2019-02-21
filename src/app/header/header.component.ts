@@ -3,17 +3,19 @@ import { Subscription } from 'rxjs';
 import { Menu } from './header.model';
 import { MenuService } from './header.service';
 import { AuthService } from '../auth/auth.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit , OnDestroy {
-  @Input() user: any = {};
+   user: any = {};
    menu: Menu[] = [];
    userIsAuthenticated = false;
-    private authListenerSubs: Subscription;
-   constructor(public menuService: MenuService, private authService: AuthService) {}
+   private authListenerSubs: Subscription;
+   constructor(public menuService: MenuService, private authService: AuthService,
+    private router: Router) {}
    private menusSub: Subscription;
    ngOnInit() {
 
@@ -22,6 +24,8 @@ export class HeaderComponent implements OnInit , OnDestroy {
       .getAuthStatusListener()
       .subscribe(isAuthenticated => {
         this.userIsAuthenticated = isAuthenticated;
+        this.user = this.authService.getUserEmail();
+
       });
    this.menuService.getMenu();
    this.menusSub = this.menuService.getMenuUpdateListener()
@@ -36,5 +40,8 @@ export class HeaderComponent implements OnInit , OnDestroy {
   ngOnDestroy() {
     this.menusSub.unsubscribe();
     this.authListenerSubs.unsubscribe();
+  }
+  navigate(link): void {
+    this.router.navigate([link]);
   }
 }

@@ -10,9 +10,11 @@ import {
   MatDialogModule,
   MatIconModule
 } from '@angular/material';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   exports: [
+    CommonModule,
     MatInputModule,
     MatCardModule,
     MatButtonModule,

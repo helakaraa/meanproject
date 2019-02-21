@@ -7,7 +7,8 @@ exports.createUser = (req, res, next) => {
   bcrypt.hash(req.body.password, 10).then(hash => {
     const user = new User({
       email: req.body.email,
-      password: hash
+      password: hash,
+      roles: 'user'
     });
     user
       .save()
@@ -44,14 +45,16 @@ exports.userLogin = (req, res, next) => {
         });
       }
       const token = jwt.sign(
-        { email: fetchedUser.email, userId: fetchedUser._id },
+        { email: fetchedUser.email, userId: fetchedUser._id , roles : fetchedUser.roles },
         "0a6b944d-d2fb-46fc-a85e-0295c986cd9f",
         { expiresIn: "1h" }
       );
       res.status(200).json({
         token: token,
         expiresIn: 3600,
-        userId: fetchedUser._id
+        userId: fetchedUser._id,
+        email: fetchedUser.email,
+        roles: fetchedUser.roles
       });
     })
     .catch(err => {

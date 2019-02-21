@@ -1,9 +1,9 @@
-import { Post } from './../posts/post.model';
+import { Post } from '../posts/post.model';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PageEvent } from '@angular/material';
 import { Subscription } from 'rxjs';
 
-import { PostsService } from './../posts/posts.service';
+import { PostsService } from '../posts/posts.service';
 
 @Component({
   selector: 'app-answer-list',

@@ -11,11 +11,13 @@ export class AuthService {
   private token: string;
   private tokenTimer: any;
   private userId: string;
+  private email: string;
+  private isAdmin = false;
   private authStatusListener = new Subject<boolean>();
 
-  constructor(private http: HttpClient, private router: Router) {}
 
-  getToken() {
+  constructor(private http: HttpClient, private router: Router) {}
+   getToken() {
     return this.token;
   }
 
@@ -26,13 +28,18 @@ export class AuthService {
   getUserId() {
     return this.userId;
   }
-
+  getUserEmail() {
+    return this.email;
+  }
   getAuthStatusListener() {
     return this.authStatusListener.asObservable();
   }
+  getUserRole() {
+    return this.isAdmin;
+  }
 
   createUser(email: string, password: string) {
-    const authData: AuthData = { email: email, password: password };
+    const authData: AuthData = { email: email, password: password};
     this.http
       .post('http://localhost:3000/api/user/signup', authData)
       .subscribe(() => {
@@ -43,9 +50,9 @@ export class AuthService {
   }
 
   login(email: string, password: string) {
-    const authData: AuthData = { email: email, password: password };
+    const authData: AuthData = { email: email, password: password};
     this.http
-      .post<{ token: string; expiresIn: number; userId: string }>(
+      .post<{ token: string; expiresIn: number; userId: string ; email: string ; roles: [string] }>(
         'http://localhost:3000/api/user/login',
         authData
       )
@@ -57,6 +64,11 @@ export class AuthService {
           this.setAuthTimer(expiresInDuration);
           this.isAuthenticated = true;
           this.userId = response.userId;
+          this.email =  response.email;
+
+          if ((response.roles.indexOf('admin') > -1)) {
+            this.isAdmin = true;
+          }
           this.authStatusListener.next(true);
           const now = new Date();
           const expirationDate = new Date(
